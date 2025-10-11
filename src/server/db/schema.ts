@@ -46,6 +46,7 @@ export const users = createTable("users", (d) => ({
 
 export const usersRelations = relations(users, ({ many }) => ({
 	accounts: many(accounts),
+	recipes: many(recipes),
 }));
 
 export const accounts = createTable(
@@ -104,3 +105,140 @@ export const verificationTokens = createTable(
 	}),
 	(t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
+
+export const recipes = createTable(
+	"recipes",
+	(d) => ({
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		title: d.varchar({ length: 255 }).notNull(),
+		description: d.text(),
+		servings: d.integer(),
+		prepTimeMinutes: d.integer(),
+		cookTimeMinutes: d.integer(),
+		difficulty: d.varchar({ length: 20 }),
+		imageUrl: d.varchar({ length: 500 }),
+		createdById: d
+			.integer()
+			.notNull()
+			.references(() => users.id),
+		createdAt: d
+			.timestamp({ withTimezone: true })
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
+		updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+	}),
+	(t) => [
+		index("recipe_created_by_idx").on(t.createdById),
+		index("recipe_title_idx").on(t.title),
+	],
+);
+
+export const ingredients = createTable(
+	"ingredients",
+	(d) => ({
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		recipeId: d
+			.integer()
+			.notNull()
+			.references(() => recipes.id, { onDelete: "cascade" }),
+		name: d.varchar({ length: 255 }).notNull(),
+		amount: d.varchar({ length: 50 }),
+		unit: d.varchar({ length: 50 }),
+		notes: d.text(),
+		order: d.integer().notNull().default(0),
+	}),
+	(t) => [
+		index("ingredient_recipe_idx").on(t.recipeId),
+		index("ingredient_order_idx").on(t.recipeId, t.order),
+	],
+);
+
+export const recipeSteps = createTable(
+	"recipe_steps",
+	(d) => ({
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		recipeId: d
+			.integer()
+			.notNull()
+			.references(() => recipes.id, { onDelete: "cascade" }),
+		stepNumber: d.integer().notNull(),
+		instruction: d.text().notNull(),
+		timeMinutes: d.integer(),
+		temperature: d.varchar({ length: 50 }),
+		notes: d.text(),
+	}),
+	(t) => [
+		index("step_recipe_idx").on(t.recipeId),
+		index("step_order_idx").on(t.recipeId, t.stepNumber),
+	],
+);
+
+export const tags = createTable(
+	"tags",
+	(d) => ({
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		name: d.varchar({ length: 100 }).notNull().unique(),
+		type: d.varchar({ length: 20 }).notNull(),
+		color: d.varchar({ length: 7 }),
+		createdAt: d
+			.timestamp({ withTimezone: true })
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
+	}),
+	(t) => [index("tag_name_idx").on(t.name), index("tag_type_idx").on(t.type)],
+);
+
+export const recipeTags = createTable(
+	"recipe_tags",
+	(d) => ({
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		recipeId: d
+			.integer()
+			.notNull()
+			.references(() => recipes.id, { onDelete: "cascade" }),
+		tagId: d
+			.integer()
+			.notNull()
+			.references(() => tags.id, { onDelete: "cascade" }),
+	}),
+	(t) => [
+		index("recipe_tag_recipe_idx").on(t.recipeId),
+		index("recipe_tag_tag_idx").on(t.tagId),
+	],
+);
+
+export const recipesRelations = relations(recipes, ({ one, many }) => ({
+	createdBy: one(users, {
+		fields: [recipes.createdById],
+		references: [users.id],
+	}),
+	ingredients: many(ingredients),
+	steps: many(recipeSteps),
+	recipeTags: many(recipeTags),
+}));
+
+export const ingredientsRelations = relations(ingredients, ({ one }) => ({
+	recipe: one(recipes, {
+		fields: [ingredients.recipeId],
+		references: [recipes.id],
+	}),
+}));
+
+export const recipeStepsRelations = relations(recipeSteps, ({ one }) => ({
+	recipe: one(recipes, {
+		fields: [recipeSteps.recipeId],
+		references: [recipes.id],
+	}),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+	recipeTags: many(recipeTags),
+}));
+
+export const recipeTagsRelations = relations(recipeTags, ({ one }) => ({
+	recipe: one(recipes, {
+		fields: [recipeTags.recipeId],
+		references: [recipes.id],
+	}),
+	tag: one(tags, { fields: [recipeTags.tagId], references: [tags.id] }),
+}));

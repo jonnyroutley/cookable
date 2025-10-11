@@ -1,9 +1,19 @@
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from "@/components/ui/carousel";
+import Marquee from "@/components/ui/marquee";
+import { cn } from "@/lib/utils";
 // import { LatestPost } from "@/app/_components/post";
 import { auth } from "@/server/auth";
 import { HydrateClient, api } from "@/trpc/server";
-import { Button } from "@/components/ui/button";
 import { Archivo } from "next/font/google";
 
 const archivo = Archivo({
@@ -20,12 +30,76 @@ export default async function Home() {
 
 	return (
 		<HydrateClient>
-			<main className={archivo.className}>
-				<h1>Hello World</h1>
+			<main className={cn(archivo.className, "min-h-screen")}>
+				<Marquee
+					items={[
+						"Let's eat", // English
+						"🍑",
+						"我们吃吧", // Chinese (Mandarin)
+						"🍙",
+						"Mangeons", // French
+						"🍜",
+						"食べましょう", // Japanese
+						"🍝",
+						"Mangiamo", // Italian
+						"🍕",
+						"لنأكل", // Arabic
+						"🍔",
+						"Vamos a comer", // Spanish
+						"🍖",
+						"Lass uns essen", // German
+						"🍟",
+						"Vamos comer", // Portuguese
+						"🍣",
+						"Давай поедим", // Russian
+						"🥓",
+						"चलो खाते हैं", // Hindi
+						"🍳",
+						"Hadi yiyelim", // Turkish
+						"🍆",
+						"먹자", // Korean
+						"🍰",
+						"Ayo makan", // Indonesian
+						"🍛",
+						"Laten we eten", // Dutch
+						"🍱",
+						"Äta nu", // Swedish
+						"🐟",
+					]}
+				/>
 				<div>
-					<p>Let's cook</p>
 					<Button type="button">Touch me</Button>
 				</div>
+				<div className="flex flex-col items-center justify-center p-6">
+					<Card className="flex flex-col items-center justify-center p-6 ">
+						<h1>Hello World</h1>
+						<div>
+							<p>Let's cook</p>
+							<Button type="button">Touch me</Button>
+						</div>
+					</Card>
+				</div>
+				<div className="flex w-full flex-col items-center gap-4">
+					<Carousel className="w-full max-w-[200px]">
+						<CarouselContent>
+							{Array.from({ length: 5 }).map((_, index) => (
+								// biome-ignore lint/suspicious/noArrayIndexKey: don't care
+								<CarouselItem key={index}>
+									<div className="p-[10px]">
+										<Card className="bg-main p-0 text-main-foreground shadow-none">
+											<CardContent className="flex aspect-square items-center justify-center p-4">
+												<span className="font-base text-3xl">{index + 1}</span>
+											</CardContent>
+										</Card>
+									</div>
+								</CarouselItem>
+							))}
+						</CarouselContent>
+						<CarouselPrevious />
+						<CarouselNext />
+					</Carousel>
+				</div>
+				<div className="text-center text-xs">Made with 💙 in Stratford</div>
 			</main>
 			{/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
 				<div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">

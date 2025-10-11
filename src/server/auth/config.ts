@@ -1,8 +1,8 @@
-import type { DefaultSession, NextAuthConfig } from "next-auth";
-import Resend from "next-auth/providers/resend";
+import { env } from "@/env";
 import PostgresAdapter from "@auth/pg-adapter";
 import { Pool } from "@neondatabase/serverless";
-import { env } from "@/env";
+import type { DefaultSession, NextAuthConfig } from "next-auth";
+import Resend from "next-auth/providers/resend";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

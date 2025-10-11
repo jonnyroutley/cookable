@@ -1,13 +1,20 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1760200060895,
-      "tag": "0000_gifted_lizard",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1760200060895,
+			"tag": "0000_gifted_lizard",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1760202094452,
+			"tag": "0001_dark_wonder_man",
+			"breakpoints": true
+		}
+	]
 }
