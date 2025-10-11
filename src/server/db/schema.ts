@@ -8,15 +8,15 @@ import type { AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `cookable_${name}`);
+export const createTable = pgTableCreator((name) => `${name}`);
 
 export const posts = createTable(
-	"post",
+	"posts",
 	(d) => ({
 		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
 		name: d.varchar({ length: 256 }),
 		createdById: d
-			.varchar({ length: 255 })
+			.integer()
 			.notNull()
 			.references(() => users.id),
 		createdAt: d
@@ -31,12 +31,8 @@ export const posts = createTable(
 	],
 );
 
-export const users = createTable("user", (d) => ({
-	id: d
-		.varchar({ length: 255 })
-		.notNull()
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
+export const users = createTable("users", (d) => ({
+	id: d.integer().notNull().primaryKey().generatedByDefaultAsIdentity(),
 	name: d.varchar({ length: 255 }),
 	email: d.varchar({ length: 255 }).notNull(),
 	emailVerified: d
@@ -53,10 +49,11 @@ export const usersRelations = relations(users, ({ many }) => ({
 }));
 
 export const accounts = createTable(
-	"account",
+	"accounts",
 	(d) => ({
+		id: d.integer().generatedByDefaultAsIdentity(),
 		userId: d
-			.varchar({ length: 255 })
+			.integer()
 			.notNull()
 			.references(() => users.id),
 		type: d.varchar({ length: 255 }).$type<AdapterAccount["type"]>().notNull(),
@@ -81,11 +78,12 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 }));
 
 export const sessions = createTable(
-	"session",
+	"sessions",
 	(d) => ({
-		sessionToken: d.varchar({ length: 255 }).notNull().primaryKey(),
+		id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+		sessionToken: d.varchar({ length: 255 }).notNull(),
 		userId: d
-			.varchar({ length: 255 })
+			.integer()
 			.notNull()
 			.references(() => users.id),
 		expires: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
