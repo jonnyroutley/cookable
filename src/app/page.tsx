@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import Marquee from "@/components/ui/marquee";
 import { HydrateClient } from "@/trpc/server";
 import { NewRecipeButton } from "./_components/NewRecipeButton";
-import { Dice5, NotebookTabs } from "lucide-react";
+import { LuckyButton } from "./_components/LuckyButton";
+import { NotebookTabs } from "lucide-react";
 
 export default async function Home() {
 	return (
@@ -56,10 +57,7 @@ export default async function Home() {
 								see all recipes
 							</Button>
 						</Link>
-						<Button variant="neutral">
-							<Dice5 className="size-4" />
-							I'm feeling lucky
-						</Button>
+						<LuckyButton />
 						<NewRecipeButton />
 					</div>
 				</div>

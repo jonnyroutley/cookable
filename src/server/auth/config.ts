@@ -35,14 +35,17 @@ export const authConfig = () => {
 	return {
 		providers: [Resend({ from: "NoReply <noreply@cookable.health>" })],
 		adapter: PostgresAdapter(pool),
-		// callbacks: {
-		// 	session: ({ session, user }) => ({
-		// 		...session,
-		// 		user: {
-		// 			...session.user,
-		// 			id: user.id,
-		// 		},
-		// 	}),
-		// },
+		callbacks: {
+			session: ({ session, user }) => ({
+				...session,
+				user: {
+					...session.user,
+					id: user.id,
+					name: user.name,
+					email: user.email,
+					image: user.image,
+				},
+			}),
+		},
 	} satisfies NextAuthConfig;
 };

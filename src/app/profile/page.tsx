@@ -30,7 +30,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/trpc/react";
 
 const updateProfileSchema = z.object({
-	name: z.string().min(1, "Name is required").max(255, "Name must be less than 255 characters"),
+	name: z
+		.string()
+		.min(1, "Name is required")
+		.max(255, "Name must be less than 255 characters"),
 });
 
 type UpdateProfileForm = z.infer<typeof updateProfileSchema>;
@@ -140,9 +143,7 @@ export default function ProfilePage() {
 				<Card>
 					<CardContent className="p-8 text-center">
 						<h2 className="mb-2 font-heading text-xl">Please log in</h2>
-						<p className="">
-							You need to be logged in to view your profile.
-						</p>
+						<p className="">You need to be logged in to view your profile.</p>
 					</CardContent>
 				</Card>
 			</div>
@@ -158,7 +159,9 @@ export default function ProfilePage() {
 			<div className="container mx-auto max-w-2xl p-4">
 				<Card>
 					<CardContent className="p-8 text-center">
-						<h2 className="mb-2 font-heading text-xl">Unable to load profile</h2>
+						<h2 className="mb-2 font-heading text-xl">
+							Unable to load profile
+						</h2>
 						<p className="">
 							There was an error loading your profile. Please try again later.
 						</p>
@@ -179,13 +182,13 @@ export default function ProfilePage() {
 					<CardDescription>
 						{isSetup
 							? "Please set your display name to continue using the app"
-							: "Manage your account settings and personal information"
-						}
+							: "Manage your account settings and personal information"}
 					</CardDescription>
 					{isSetup && (
 						<div className="mt-2 rounded-base border-2 border-yellow-500 bg-yellow-50 p-3">
-							<p className="text-yellow-800 text-sm font-medium">
-								⚠️ You need to set a display name before you can create recipes or use other features.
+							<p className="font-medium text-sm text-yellow-800">
+								⚠️ You need to set a display name before you can create recipes
+								or use other features.
 							</p>
 						</div>
 					)}
@@ -200,10 +203,7 @@ export default function ProfilePage() {
 									<FormItem>
 										<FormLabel>Display Name *</FormLabel>
 										<FormControl>
-											<Input
-												placeholder="Enter your display name"
-												{...field}
-											/>
+											<Input placeholder="Jacques Pepin" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -213,27 +213,26 @@ export default function ProfilePage() {
 							<div className="space-y-4">
 								<div>
 									<FormLabel className="font-base">Email</FormLabel>
-									<Input
-										value={profile.email}
-										disabled
-										className="bg-muted"
-									/>
-									<p className="mt-1 text-muted-foreground text-sm">
-										Email cannot be changed
-									</p>
+									<Input value={profile.email} disabled className="bg-muted bg-white" />
 								</div>
 							</div>
 
 							<div className="flex justify-end">
 								<Button
 									type="submit"
-									disabled={isSubmitting || (!isSetup && !form.formState.isDirty)}
+									disabled={
+										isSubmitting || (!isSetup && !form.formState.isDirty)
+									}
 									className="min-w-24"
+									variant="neutral"
 								>
 									{isSubmitting
-										? (isSetup ? "Setting up..." : "Saving...")
-										: (isSetup ? "Complete Setup" : "Save Changes")
-									}
+										? isSetup
+											? "Setting up..."
+											: "Saving..."
+										: isSetup
+											? "Complete Setup"
+											: "Save Changes"}
 								</Button>
 							</div>
 						</form>

@@ -30,9 +30,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const emailSchema = z.object({
 	email: z
-		.string()
-		.min(1, "Email is required")
 		.email("Please enter a valid email address")
+		.min(1, "Email is required")
 		.refine(
 			(email) => email.endsWith("@healthtech1.uk"),
 			"Email must be from @healthtech1.uk domain",
@@ -50,7 +49,7 @@ function SignInContent() {
 	const form = useForm<EmailForm>({
 		resolver: zodResolver(emailSchema),
 		defaultValues: {
-			email: "",
+			email: "@healthtech1.uk",
 		},
 	});
 

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import {
@@ -347,4 +347,53 @@ export const recipeRouter = createTRPCRouter({
 
 			return { success: true };
 		}),
+
+	getRandom: publicProcedure.query(async ({ ctx }) => {
+		const [recipeCount] = await ctx.db.select({ count: count() }).from(recipes);
+
+		if (!recipeCount || recipeCount.count === 0) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "No recipes found",
+			});
+		}
+
+		const randomOffset = Math.floor(Math.random() * recipeCount.count);
+
+		const randomRecipe = await ctx.db.query.recipes.findFirst({
+			offset: randomOffset,
+			with: {
+				createdBy: {
+					columns: {
+						id: true,
+						name: true,
+						image: true,
+					},
+				},
+				ingredients: {
+					orderBy: (ingredients, { asc }) => [asc(ingredients.order)],
+				},
+				steps: {
+					orderBy: (steps, { asc }) => [asc(steps.stepNumber)],
+				},
+				recipeTags: {
+					with: {
+						tag: true,
+					},
+				},
+			},
+		});
+
+		if (!randomRecipe) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Recipe not found",
+			});
+		}
+
+		return {
+			...randomRecipe,
+			tags: randomRecipe.recipeTags.map((rt) => rt.tag),
+		};
+	}),
 });
