@@ -1,12 +1,24 @@
-# Create T3 App
+# Cookable
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern recipe management application built with the T3 Stack. Discover, create, and organize your favorite recipes with an intuitive interface.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- 🍳 Create and manage your recipe collection
+- 🎲 "Feeling Lucky" feature to discover random recipes
+- 👤 User authentication and profiles
+- 📱 Responsive design for all devices
+- 🌍 Multilingual welcome messages
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `bun install`
+3. Set up your environment variables (copy `.env.example` to `.env`)
+4. Set up the database: `bun run db:push`
+5. Start the development server: `bun run dev`
+
+## Tech Stack
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
@@ -15,14 +27,16 @@ If you are not familiar with the different technologies used in this project, pl
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
 
-## Learn More
+## Development
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Available scripts:
+- `bun run dev` - Start development server with Turbo
+- `bun run build` - Build for production
+- `bun run start` - Start production server
+- `bun run typecheck` - Run TypeScript checks
+- `bun run check` - Run Biome linting
+- `bun run db:studio` - Open Drizzle Studio
+- `bun run db:generate` - Generate database migrations
 
 ## How do I deploy this?
 

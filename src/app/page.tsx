@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Marquee from "@/components/ui/marquee";
 import { HydrateClient } from "@/trpc/server";
+import { GuyFieriQuotation } from "./_components/GuyFieriQuotation";
 import { LuckyButton } from "./_components/LuckyButton";
 import { NewRecipeButton } from "./_components/NewRecipeButton";
 
@@ -47,10 +48,11 @@ export default async function Home() {
 					]}
 				/>
 			</div>
-			<main className="flex h-full flex-col items-center justify-between gap-8 p-4 sm:p-12">
+			<main className="mx-auto flex h-full max-w-2xl flex-col items-center justify-between gap-8 p-4 sm:p-12">
 				<h1 className="flex flex-row items-center gap-2 text-center">
 					Welcome to Cookable!
 				</h1>
+				<GuyFieriQuotation />
 				<div className="flex flex-col items-center gap-4">
 					<div className="flex flex-wrap justify-center gap-4">
 						<Link href="/recipe">
