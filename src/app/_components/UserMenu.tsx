@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	Github,
 	LifeBuoy,
@@ -25,7 +27,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { auth, signOut } from "@/server/auth";
+import { useSession } from "next-auth/react";
 import { SignOutMenuButton } from "./Foo";
 
 function LoggedInMenu({ name }: { name: string }) {
@@ -100,8 +102,8 @@ function LoggedOutMenu() {
 	);
 }
 
-export async function UserMenu() {
-	const session = await auth();
+export function UserMenu() {
+	const { data: session } = useSession();
 
 	return (
 		<DropdownMenu>
