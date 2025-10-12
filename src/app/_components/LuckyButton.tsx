@@ -8,21 +8,12 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 
 interface LuckyButtonProps {
-	variant?:
-		| "default"
-		| "destructive"
-		| "outline"
-		| "secondary"
-		| "ghost"
-		| "link"
-		| "neutral";
 	size?: "default" | "sm" | "lg" | "icon";
 	className?: string;
 	children?: React.ReactNode;
 }
 
 export function LuckyButton({
-	variant = "neutral",
 	size = "default",
 	className,
 	children,
@@ -47,7 +38,7 @@ export function LuckyButton({
 	return (
 		<Button
 			type="button"
-			variant={variant}
+			variant="neutral"
 			size={size}
 			className={className}
 			onClick={handleLuckyClick}
