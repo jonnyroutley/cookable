@@ -51,7 +51,7 @@ const createRecipeSchema = z.object({
 	prepTimeMinutes: z.number().int().min(0).optional(),
 	cookTimeMinutes: z.number().int().min(0).optional(),
 	difficulty: z.enum(["easy", "medium", "hard"]).optional(),
-	imageUrl: z.string().url().optional().or(z.literal("")),
+	// imageUrl: z.string().url().optional().or(z.literal("")),
 	ingredients: z
 		.array(ingredientSchema)
 		.min(1, "At least one ingredient is required"),
@@ -74,27 +74,6 @@ export default function NewRecipePage() {
 		}
 	}, [status, router]);
 
-	// Show loading while checking authentication
-	if (status === "loading") {
-		return (
-			<div className={cn("container mx-auto max-w-4xl p-4")}>
-				<Card className="mb-6">
-					<CardHeader>
-						<div className="animate-pulse">
-							<div className="h-8 bg-secondary-background rounded mb-2"></div>
-							<div className="h-4 bg-secondary-background rounded w-3/4"></div>
-						</div>
-					</CardHeader>
-				</Card>
-			</div>
-		);
-	}
-
-	// Don't render the form if not authenticated
-	if (!session) {
-		return null;
-	}
-
 	const defaultValues: CreateRecipeForm = {
 		title: "",
 		description: "",
@@ -102,7 +81,7 @@ export default function NewRecipePage() {
 		prepTimeMinutes: undefined,
 		cookTimeMinutes: undefined,
 		difficulty: undefined,
-		imageUrl: "",
+		// imageUrl: "",
 		ingredients: [{ name: "", amount: "", unit: "", notes: "", order: 0 }],
 		steps: [
 			{
@@ -180,6 +159,26 @@ export default function NewRecipePage() {
 			// Error handling is done in the mutation callback
 		}
 	};
+	// Show loading while checking authentication
+	if (status === "loading") {
+		return (
+			<div className={cn("container mx-auto max-w-4xl p-4")}>
+				<Card className="mb-6">
+					<CardHeader>
+						<div className="animate-pulse">
+							<div className="h-8 bg-secondary-background rounded mb-2"></div>
+							<div className="h-4 bg-secondary-background rounded w-3/4"></div>
+						</div>
+					</CardHeader>
+				</Card>
+			</div>
+		);
+	}
+
+	// Don't render the form if not authenticated
+	if (!session) {
+		return null;
+	}
 
 	return (
 		<div className={cn("container mx-auto max-w-4xl p-4")}>
@@ -235,7 +234,7 @@ export default function NewRecipePage() {
 								)}
 							/>
 
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name="imageUrl"
 								render={({ field }) => (
@@ -250,7 +249,7 @@ export default function NewRecipePage() {
 										<FormMessage />
 									</FormItem>
 								)}
-							/>
+							/> */}
 
 							<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
 								<FormField
@@ -569,7 +568,7 @@ export default function NewRecipePage() {
 					</Card>
 
 					{/* Submit */}
-					<Card>
+					<Card className="mb-12">
 						<CardContent className="p-4">
 							<div className="flex justify-end gap-4">
 								<Button

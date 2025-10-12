@@ -3,7 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -60,7 +61,10 @@ function ProfileSkeleton() {
 
 export default function ProfilePage() {
 	const { data: session, update: updateSession } = useSession();
+	const router = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const searchParams = useSearchParams();
+	const isSetup = searchParams.get("setup") === "true";
 
 	const {
 		data: profile,
@@ -74,20 +78,26 @@ export default function ProfilePage() {
 	const form = useForm<UpdateProfileForm>({
 		resolver: zodResolver(updateProfileSchema),
 		defaultValues: {
-			name: profile?.name || "",
+			name: "",
 		},
 	});
 
 	// Update form when profile data loads
-	if (profile && !form.getValues().name) {
-		form.reset({
-			name: profile.name || "",
-		});
-	}
+	useEffect(() => {
+		if (profile) {
+			form.reset({
+				name: profile.name || "",
+			});
+		}
+	}, [profile, form]);
 
 	const updateProfile = api.user.updateProfile.useMutation({
 		onSuccess: async (updatedUser) => {
-			toast.success("Profile updated successfully!");
+			if (isSetup) {
+				toast.success("Welcome! Your profile has been set up successfully.");
+			} else {
+				toast.success("Profile updated successfully!");
+			}
 			setIsSubmitting(false);
 
 			// Update the session with new name
@@ -101,6 +111,13 @@ export default function ProfilePage() {
 
 			// Refetch profile data
 			await refetchProfile();
+
+			// If this was setup, redirect to home page
+			if (isSetup) {
+				setTimeout(() => {
+					router.push("/");
+				}, 1000);
+			}
 		},
 		onError: (error) => {
 			toast.error(error.message || "Failed to update profile");
@@ -157,11 +174,21 @@ export default function ProfilePage() {
 				<CardHeader>
 					<CardTitle className="font-heading text-2xl">
 						<User className="mr-2 inline h-6 w-6" />
-						Your Profile
+						{isSetup ? "Welcome! Set up your profile" : "Your Profile"}
 					</CardTitle>
 					<CardDescription>
-						Manage your account settings and personal information
+						{isSetup
+							? "Please set your display name to continue using the app"
+							: "Manage your account settings and personal information"
+						}
 					</CardDescription>
+					{isSetup && (
+						<div className="mt-2 rounded-base border-2 border-yellow-500 bg-yellow-50 p-3">
+							<p className="text-yellow-800 text-sm font-medium">
+								⚠️ You need to set a display name before you can create recipes or use other features.
+							</p>
+						</div>
+					)}
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -200,10 +227,13 @@ export default function ProfilePage() {
 							<div className="flex justify-end">
 								<Button
 									type="submit"
-									disabled={isSubmitting || !form.formState.isDirty}
+									disabled={isSubmitting || (!isSetup && !form.formState.isDirty)}
 									className="min-w-24"
 								>
-									{isSubmitting ? "Saving..." : "Save Changes"}
+									{isSubmitting
+										? (isSetup ? "Setting up..." : "Saving...")
+										: (isSetup ? "Complete Setup" : "Save Changes")
+									}
 								</Button>
 							</div>
 						</form>

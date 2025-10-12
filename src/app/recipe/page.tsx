@@ -91,9 +91,9 @@ function RecipeCard({
 							)}
 						</div>
 						{recipe.imageUrl ? (
-							<div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-base border-2 border-border bg-secondary-background sm:h-20 sm:w-20">
+							<div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-base border-2 border-border bg-secondary-background text-center sm:h-20 sm:w-20">
 								Images coming soon
-								{/* <Image
+								{/* <Image	
 									src={recipe.imageUrl}
 									alt={recipe.title}
 									width={80}

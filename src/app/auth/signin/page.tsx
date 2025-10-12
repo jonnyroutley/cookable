@@ -2,7 +2,7 @@
 
 import { signIn, getProviders } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useMemo } from "react";
 import { Github, LogIn, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +35,7 @@ const emailSchema = z.object({
 		.email("Please enter a valid email address")
 		.refine(
 			(email) => email.endsWith("@healthtech1.uk"),
-			"Email must be from @healthtech1.uk domain"
+			"Email must be from @healthtech1.uk domain",
 		),
 });
 
@@ -87,6 +87,23 @@ function SignInContent() {
 		}
 	};
 
+	// Separate email providers from OAuth providers
+	const { emailProviders, oauthProviders } = useMemo(() => {
+		if (!providers) {
+			return { emailProviders: [], oauthProviders: [] };
+		}
+
+		const allProviders = Object.values(providers);
+		const emailProviders = allProviders.filter(
+			(provider: any) => provider.id === "resend" || provider.type === "email",
+		);
+		const oauthProviders = allProviders.filter(
+			(provider: any) => provider.id !== "resend" && provider.type !== "email",
+		);
+
+		return { emailProviders, oauthProviders };
+	}, [providers]);
+
 	if (!providers) {
 		return (
 			<div className="container mx-auto max-w-md p-4">
@@ -102,14 +119,6 @@ function SignInContent() {
 			</div>
 		);
 	}
-
-	// Separate email providers from OAuth providers
-	const emailProviders = providers ? Object.values(providers).filter((provider: any) =>
-		provider.id === "resend" || provider.type === "email"
-	) : [];
-	const oauthProviders = providers ? Object.values(providers).filter((provider: any) =>
-		provider.id !== "resend" && provider.type !== "email"
-	) : [];
 
 	return (
 		<div className="container mx-auto max-w-md p-4">
@@ -128,7 +137,10 @@ function SignInContent() {
 					{emailProviders.length > 0 && (
 						<div>
 							<Form {...form}>
-								<form onSubmit={form.handleSubmit(handleEmailSignIn)} className="space-y-4">
+								<form
+									onSubmit={form.handleSubmit(handleEmailSignIn)}
+									className="space-y-4"
+								>
 									<FormField
 										control={form.control}
 										name="email"
@@ -151,9 +163,10 @@ function SignInContent() {
 										className="w-full"
 										size="lg"
 										disabled={isSubmitting}
+										variant="neutral"
 									>
 										<Mail className="mr-2 h-4 w-4" />
-										{isSubmitting ? "Sending..." : "Sign in with Email"}
+										{isSubmitting ? "Sending..." : "Send me a magic link 🪄"}
 									</Button>
 								</form>
 							</Form>

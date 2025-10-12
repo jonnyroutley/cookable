@@ -8,6 +8,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "./_components/UserMenu";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
 	title: "Create T3 App",
@@ -28,7 +29,7 @@ export default function RootLayout({
 				<TRPCReactProvider>
 					<SessionProvider>
 						<div className={cn("relative min-h-screen")}>
-							<div className="flex w-full items-center justify-between border-black border-y-2 py-2 pr-4 pl-1">
+							<div className="flex w-full items-center justify-between border-black border-y-4 py-4 pr-4 pl-1">
 								<Link
 									href="/"
 									className="w-fit font-bold text-3xl hover:text-main hover:underline sm:text-5xl"
@@ -38,10 +39,11 @@ export default function RootLayout({
 								<UserMenu />
 							</div>
 							{children}
-							<div className="absolute right-0 bottom-0 left-0 border-t-2 bg-white py-2 text-center text-xs">
+							<div className="absolute right-0 bottom-0 left-0 border-t-2 bg-white py-2 text-center text-base">
 								Made with 💙 in Stratford
 							</div>
 						</div>
+						<Toaster />
 					</SessionProvider>
 				</TRPCReactProvider>
 			</body>

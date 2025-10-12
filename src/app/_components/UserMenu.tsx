@@ -28,10 +28,10 @@ import Link from "next/link";
 import { auth, signOut } from "@/server/auth";
 import { SignOutMenuButton } from "./Foo";
 
-function LoggedInMenu() {
+function LoggedInMenu({ name }: { name: string }) {
 	return (
 		<>
-			<DropdownMenuLabel>My Account</DropdownMenuLabel>
+			<DropdownMenuLabel>{name}</DropdownMenuLabel>
 			<DropdownMenuSeparator />
 			<DropdownMenuGroup>
 				<Link href="/profile">
@@ -111,7 +111,11 @@ export async function UserMenu() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-				{session?.user ? <LoggedInMenu /> : <LoggedOutMenu />}
+				{session?.user ? (
+					<LoggedInMenu name={session.user.name || "My Account"} />
+				) : (
+					<LoggedOutMenu />
+				)}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

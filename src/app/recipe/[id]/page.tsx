@@ -77,7 +77,7 @@ export default function RecipePage() {
 	return (
 		<>
 			{/* Recipe Header */}
-			<Card className="mb-6 bg-white">
+			<Card className="mb-6">
 				<CardHeader>
 					<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 						<div className="flex-1">
@@ -91,7 +91,7 @@ export default function RecipePage() {
 							)}
 						</div>
 						{recipe.imageUrl && (
-							<div className="h-48 w-full overflow-hidden rounded-base border-2 border-border bg-secondary-background sm:w-48">
+							<div className="flex h-48 w-full items-center overflow-hidden rounded-base border-2 border-border bg-secondary-background text-center sm:w-48">
 								Image support coming soon
 								{/* <Image
 									src={recipe.imageUrl}
@@ -109,7 +109,7 @@ export default function RecipePage() {
 					<div className="mb-4 flex flex-wrap gap-4">
 						{recipe.servings && (
 							<div className="flex items-center gap-2">
-								<Users className="h-4 w-4 text-main" />
+								<Users className="h-4 w-4 " />
 								<span className="font-base text-sm">
 									{recipe.servings} servings
 								</span>
@@ -117,7 +117,7 @@ export default function RecipePage() {
 						)}
 						{recipe.prepTimeMinutes && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4 text-main" />
+								<Clock className="h-4 w-4 " />
 								<span className="font-base text-sm">
 									{recipe.prepTimeMinutes}m prep
 								</span>
@@ -125,7 +125,7 @@ export default function RecipePage() {
 						)}
 						{recipe.cookTimeMinutes && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4 text-main" />
+								<Clock className="h-4 w-4 " />
 								<span className="font-base text-sm">
 									{recipe.cookTimeMinutes}m cook
 								</span>
@@ -133,7 +133,7 @@ export default function RecipePage() {
 						)}
 						{totalTime > 0 && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4 text-main" />
+								<Clock className="h-4 w-4 " />
 								<span className="font-base font-bold text-sm">
 									{totalTime}m total
 								</span>
@@ -141,7 +141,7 @@ export default function RecipePage() {
 						)}
 						{recipe.difficulty && (
 							<div className="flex items-center gap-2">
-								<ChefHat className="h-4 w-4 text-main" />
+								<ChefHat className="h-4 w-4 " />
 								<span className="font-base text-sm capitalize">
 									{recipe.difficulty}
 								</span>
@@ -177,7 +177,12 @@ export default function RecipePage() {
 					<div className="mb-4 flex items-center justify-between">
 						<h2 className="h-8 font-heading text-xl">Ingredients</h2>
 						{checkedIngredients.length > 0 && (
-							<Button size="sm" onClick={clearAllIngredients} className="h-8">
+							<Button
+								size="sm"
+								onClick={clearAllIngredients}
+								className="h-8"
+								variant={"neutral"}
+							>
 								<X className="mr-1 h-3 w-3" />
 								Clear All
 							</Button>
@@ -191,7 +196,7 @@ export default function RecipePage() {
 									id={`ingredient-${ingredient.id}`}
 									checked={checkedIngredients.includes(ingredient.id)}
 									onCheckedChange={() => toggleIngredient(ingredient.id)}
-									className="mt-0.5"
+									className="mt-0.5 bg-white"
 								/>
 								<div className="flex-1">
 									<label
@@ -240,7 +245,7 @@ export default function RecipePage() {
 						{recipe.steps.map((step) => (
 							<li key={step.id} className="flex items-start gap-3">
 								<span
-									className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-border bg-main font-bold text-main-foreground text-sm `}
+									className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-border bg-white font-bold text-main-foreground text-sm `}
 								>
 									{step.stepNumber}
 								</span>

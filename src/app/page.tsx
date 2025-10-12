@@ -46,7 +46,7 @@ export default async function Home() {
 					]}
 				/>
 			</div>
-			<main className="flex h-full flex-col items-center justify-between gap-12 p-4 sm:p-12">
+			<main className="flex h-full flex-col items-center justify-between gap-8 p-4 sm:p-12">
 				<h1 className="text-center">Welcome to Cookable!</h1>
 				<div className="flex flex-col items-center gap-4">
 					<div className="flex flex-wrap justify-center gap-4">
