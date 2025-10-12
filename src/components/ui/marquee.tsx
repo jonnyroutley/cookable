@@ -1,6 +1,7 @@
 export default function Marquee({ items }: { items: string[] }) {
 	return (
-		<div className="relative flex w-full overflow-x-hidden border-border border-t-2 border-b-2 bg-secondary-background font-base text-foreground">
+		// Removed border t here to not overlap with header but this is a short term solution
+		<div className="relative flex w-full overflow-x-hidden border-border border-b-2 bg-secondary-background font-base text-foreground">
 			<div className="animate-marquee whitespace-nowrap">
 				{items.map((item) => {
 					return (

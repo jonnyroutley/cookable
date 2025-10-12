@@ -2,8 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefHat, Clock, Plus, Trash2, Users, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -62,8 +63,37 @@ type CreateRecipeForm = z.infer<typeof createRecipeSchema>;
 
 export default function NewRecipePage() {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+
+	// Redirect to login if not authenticated
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth/signin?callbackUrl=/recipe/new");
+		}
+	}, [status, router]);
+
+	// Show loading while checking authentication
+	if (status === "loading") {
+		return (
+			<div className={cn("container mx-auto max-w-4xl p-4")}>
+				<Card className="mb-6">
+					<CardHeader>
+						<div className="animate-pulse">
+							<div className="h-8 bg-secondary-background rounded mb-2"></div>
+							<div className="h-4 bg-secondary-background rounded w-3/4"></div>
+						</div>
+					</CardHeader>
+				</Card>
+			</div>
+		);
+	}
+
+	// Don't render the form if not authenticated
+	if (!session) {
+		return null;
+	}
 
 	const defaultValues: CreateRecipeForm = {
 		title: "",

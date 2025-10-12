@@ -4,6 +4,10 @@ import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { UserMenu } from "./_components/UserMenu";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
 	title: "Create T3 App",
@@ -21,7 +25,25 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={`${archivo.className}`}>
 			<body>
-				<TRPCReactProvider>{children}</TRPCReactProvider>
+				<TRPCReactProvider>
+					<SessionProvider>
+						<div className={cn("relative min-h-screen")}>
+							<div className="flex w-full items-center justify-between border-black border-y-2 py-2 pr-4 pl-1">
+								<Link
+									href="/"
+									className="w-fit font-bold text-3xl hover:text-main hover:underline sm:text-5xl"
+								>
+									Cookable
+								</Link>
+								<UserMenu />
+							</div>
+							{children}
+							<div className="absolute right-0 bottom-0 left-0 border-t-2 bg-white py-2 text-center text-xs">
+								Made with 💙 in Stratford
+							</div>
+						</div>
+					</SessionProvider>
+				</TRPCReactProvider>
 			</body>
 		</html>
 	);
