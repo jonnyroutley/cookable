@@ -27,9 +27,12 @@ export default async function Home() {
 	return (
 		<HydrateClient>
 			<div className={cn("relative min-h-screen")}>
-				<h1 className="break-words border-t-2 p-1 font-bold text-3xl hover:underline sm:text-5xl">
+				<Link
+					href="/"
+					className="break-words border-t-2 p-1 font-bold text-3xl transition-colors hover:text-main hover:underline sm:text-5xl"
+				>
 					Cookable
-				</h1>
+				</Link>
 				<div className="overflow-hidden">
 					<Marquee
 						items={[
@@ -69,27 +72,22 @@ export default async function Home() {
 					/>
 				</div>
 				<main className="flex h-full flex-col items-center justify-between gap-12 p-4 sm:p-12">
-					<Card className="w-full max-w-lg">
-						<CardHeader>
-							<CardTitle className="text-center">
-								Welcome to Cookable!
-							</CardTitle>
-						</CardHeader>
-						<CardContent className="flex flex-col items-center gap-4">
-							<div className="flex flex-wrap justify-center gap-4">
-								<Link href="/recipe">
-									<Button type="button" variant="neutral">
-										<NotebookTabs className="size-4" />
-										see all recipes
-									</Button>
-								</Link>
-								<Button variant="neutral">
-									<Dice5 className="size-4" />
-									I'm feeling lucky</Button>
-								<NewRecipeButton />
-							</div>
-						</CardContent>
-					</Card>
+					<h1 className="text-center">Welcome to Cookable!</h1>
+					<div className="flex flex-col items-center gap-4">
+						<div className="flex flex-wrap justify-center gap-4">
+							<Link href="/recipe">
+								<Button type="button" variant="neutral">
+									<NotebookTabs className="size-4" />
+									see all recipes
+								</Button>
+							</Link>
+							<Button variant="neutral">
+								<Dice5 className="size-4" />
+								I'm feeling lucky
+							</Button>
+							<NewRecipeButton />
+						</div>
+					</div>
 					<div className="w-full max-w-[200px]">
 						{/* <Carousel>
 							<CarouselContent>

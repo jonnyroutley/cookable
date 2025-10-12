@@ -34,7 +34,6 @@ function SkeletonCard() {
 export default function RecipePage() {
 	const params = useParams();
 	const recipeId = Number.parseInt(params.id as string);
-	const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
 	const [checkedIngredients, setCheckedIngredients] = useState<number[]>([]);
 
 	const {
@@ -42,14 +41,6 @@ export default function RecipePage() {
 		isLoading,
 		error,
 	} = api.recipe.getById.useQuery({ id: recipeId });
-
-	const toggleStep = (stepNumber: number) => {
-		setCheckedSteps((prev) =>
-			prev.includes(stepNumber)
-				? prev.filter((step) => step !== stepNumber)
-				: [...prev, stepNumber],
-		);
-	};
 
 	const toggleIngredient = (ingredientId: number) => {
 		setCheckedIngredients((prev) =>
@@ -70,12 +61,10 @@ export default function RecipePage() {
 	if (error || !recipe) {
 		return (
 			<div className="container mx-auto p-4">
-				<Card>
+				<Card className="bg-white">
 					<CardContent className="p-8 text-center">
 						<h2 className="mb-2 font-heading text-xl">Recipe not found</h2>
-						<p className="">
-							The recipe you're looking for doesn't exist.
-						</p>
+						<p className="">The recipe you're looking for doesn't exist.</p>
 					</CardContent>
 				</Card>
 			</div>
@@ -88,7 +77,7 @@ export default function RecipePage() {
 	return (
 		<>
 			{/* Recipe Header */}
-			<Card className="mb-6">
+			<Card className="mb-6 bg-white">
 				<CardHeader>
 					<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 						<div className="flex-1">
@@ -115,12 +104,12 @@ export default function RecipePage() {
 						)}
 					</div>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="">
 					{/* Recipe Meta Info */}
 					<div className="mb-4 flex flex-wrap gap-4">
 						{recipe.servings && (
 							<div className="flex items-center gap-2">
-								<Users className="h-4 w-4" />
+								<Users className="h-4 w-4 text-main" />
 								<span className="font-base text-sm">
 									{recipe.servings} servings
 								</span>
@@ -128,7 +117,7 @@ export default function RecipePage() {
 						)}
 						{recipe.prepTimeMinutes && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4" />
+								<Clock className="h-4 w-4 text-main" />
 								<span className="font-base text-sm">
 									{recipe.prepTimeMinutes}m prep
 								</span>
@@ -136,7 +125,7 @@ export default function RecipePage() {
 						)}
 						{recipe.cookTimeMinutes && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4" />
+								<Clock className="h-4 w-4 text-main" />
 								<span className="font-base text-sm">
 									{recipe.cookTimeMinutes}m cook
 								</span>
@@ -144,7 +133,7 @@ export default function RecipePage() {
 						)}
 						{totalTime > 0 && (
 							<div className="flex items-center gap-2">
-								<Clock className="h-4 w-4" />
+								<Clock className="h-4 w-4 text-main" />
 								<span className="font-base font-bold text-sm">
 									{totalTime}m total
 								</span>
@@ -152,7 +141,7 @@ export default function RecipePage() {
 						)}
 						{recipe.difficulty && (
 							<div className="flex items-center gap-2">
-								<ChefHat className="h-4 w-4" />
+								<ChefHat className="h-4 w-4 text-main" />
 								<span className="font-base text-sm capitalize">
 									{recipe.difficulty}
 								</span>
@@ -188,19 +177,14 @@ export default function RecipePage() {
 					<div className="mb-4 flex items-center justify-between">
 						<h2 className="h-8 font-heading text-xl">Ingredients</h2>
 						{checkedIngredients.length > 0 && (
-							<Button
-								variant="neutral"
-								size="sm"
-								onClick={clearAllIngredients}
-								className="h-8"
-							>
+							<Button size="sm" onClick={clearAllIngredients} className="h-8">
 								<X className="mr-1 h-3 w-3" />
 								Clear All
 							</Button>
 						)}
 					</div>
 
-					<ul className="space-y-3">
+					<ul className="space-y-3 ">
 						{recipe.ingredients.map((ingredient) => (
 							<li key={ingredient.id} className="ml-3 flex items-start gap-3 ">
 								<Checkbox
@@ -255,35 +239,15 @@ export default function RecipePage() {
 					<ol className="space-y-4">
 						{recipe.steps.map((step) => (
 							<li key={step.id} className="flex items-start gap-3">
-								<button
-									type="button"
-									onClick={() => toggleStep(step.stepNumber)}
-									className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-border text-sm font-bold${
-										checkedSteps.includes(step.stepNumber)
-											? "bg-main text-main-foreground"
-											: "bg-secondary-background hover:bg-main hover:text-main-foreground"
-									}transition-colors`}
+								<span
+									className={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-border bg-main font-bold text-main-foreground text-sm `}
 								>
 									{step.stepNumber}
-								</button>
+								</span>
 								<div className="flex-1 pt-1">
-									<p
-										className={`font-base leading-relaxed${
-											checkedSteps.includes(step.stepNumber)
-												? " line-through"
-												: ""
-										}
-											`}
-									>
+									<p className={`font-base leading-relaxed`}>
 										{step.instruction}
 									</p>
-									{(step.timeMinutes || step.temperature || step.notes) && (
-										<div className="mt-2 space-y-1  text-sm">
-											{step.timeMinutes && <p>⏱️ {step.timeMinutes} minutes</p>}
-											{step.temperature && <p>🌡️ {step.temperature}</p>}
-											{step.notes && <p>💡 {step.notes}</p>}
-										</div>
-									)}
 								</div>
 							</li>
 						))}
