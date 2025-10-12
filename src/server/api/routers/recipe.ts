@@ -303,7 +303,7 @@ export const recipeRouter = createTRPCRouter({
 		.input(
 			z.object({
 				name: z.string().min(1).max(100),
-				type: z.enum(["cuisine", "allergen", "diet", "meal", "other"]),
+				type: z.enum(["cuisine", "allergen", "dietary"]),
 				color: z.string().length(7).optional(),
 			}),
 		)

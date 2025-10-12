@@ -28,6 +28,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { TagSelector } from "@/components/ui/tag-selector";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 
@@ -66,6 +67,7 @@ export default function NewRecipePage() {
 	const { data: session, status } = useSession();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+	const [availableTags, setAvailableTags] = useState<any[]>([]);
 
 	// Redirect to login if not authenticated
 	useEffect(() => {
@@ -116,13 +118,27 @@ export default function NewRecipePage() {
 	});
 
 	// Fetch available tags
-	const { data: availableTags = [] } = api.recipe.getTags.useQuery();
+	const { data: tagsData = [] } = api.recipe.getTags.useQuery();
+
+	// Update available tags when data changes
+	useEffect(() => {
+		setAvailableTags(tagsData);
+	}, [tagsData]);
 
 	const toggleTag = (tagId: number) => {
 		const newTagIds = selectedTagIds.includes(tagId)
 			? selectedTagIds.filter((id) => id !== tagId)
 			: [...selectedTagIds, tagId];
 
+		setSelectedTagIds(newTagIds);
+		form.setValue("tagIds", newTagIds);
+	};
+
+	const handleTagCreate = (newTag: any) => {
+		// Add the newly created tag to available tags
+		setAvailableTags((prev) => [...prev, newTag]);
+		// Automatically select the newly created tag
+		const newTagIds = [...selectedTagIds, newTag.id];
 		setSelectedTagIds(newTagIds);
 		form.setValue("tagIds", newTagIds);
 	};
@@ -366,30 +382,12 @@ export default function NewRecipePage() {
 							</div>
 
 							{/* Tags */}
-							{availableTags.length > 0 && (
-								<div>
-									<FormLabel className="font-heading text-base">Tags</FormLabel>
-									<FormDescription className="mb-3">
-										Add relevant tags to help people find your recipe
-									</FormDescription>
-									<div className="flex flex-wrap gap-2">
-										{availableTags.map((tag) => (
-											<Badge
-												key={tag.id}
-												variant={
-													selectedTagIds.includes(tag.id)
-														? "default"
-														: "neutral"
-												}
-												className="cursor-pointer select-none transition-colors hover:opacity-80"
-												onClick={() => toggleTag(tag.id)}
-											>
-												{tag.name}
-											</Badge>
-										))}
-									</div>
-								</div>
-							)}
+							<TagSelector
+								selectedTagIds={selectedTagIds}
+								onTagToggle={toggleTag}
+								availableTags={availableTags}
+								onTagCreate={handleTagCreate}
+							/>
 						</CardContent>
 					</Card>
 
