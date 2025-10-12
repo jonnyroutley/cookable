@@ -130,6 +130,7 @@ function Carousel({
 				canScrollNext,
 			}}
 		>
+			{/** biome-ignore lint/a11y/useSemanticElements: it's ok */}
 			<div
 				onKeyDownCapture={handleKeyDown}
 				className={cn("relative", className)}

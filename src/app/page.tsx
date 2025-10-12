@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Archivo } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -13,15 +12,14 @@ import Marquee from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
 // import { LatestPost } from "@/app/_components/post";
 import { auth } from "@/server/auth";
-import { HydrateClient, api } from "@/trpc/server";
-import { Archivo } from "next/font/google";
+import { api, HydrateClient } from "@/trpc/server";
 
 const archivo = Archivo({
 	subsets: ["latin"],
 });
 
 export default async function Home() {
-	const hello = await api.post.hello({ text: "from tRPC" });
+	const _hello = await api.post.hello({ text: "from tRPC" });
 	const session = await auth();
 
 	if (session?.user) {
@@ -73,7 +71,7 @@ export default async function Home() {
 						<Button type="button">+ new recipe</Button>
 					</div>
 					<div className="flex flex-col items-center justify-center p-6">
-						<Card className="flex flex-col items-center justify-center p-6 w-full">
+						<Card className="flex w-full flex-col items-center justify-center p-6">
 							<h1>Welcome to cookable</h1>
 							<Button>I'm feeling lucky</Button>
 							<Carousel className="w-full max-w-[200px]">

@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import {
@@ -10,9 +10,8 @@ import {
 import {
 	ingredients,
 	recipeSteps,
-	recipeTags,
 	recipes,
-	tags,
+	recipeTags,
 } from "@/server/db/schema";
 
 const ingredientSchema = z.object({
@@ -275,10 +274,10 @@ export const recipeRouter = createTRPCRouter({
 				},
 			});
 
-			let nextCursor: number | undefined = undefined;
+			let nextCursor: number | undefined;
 			if (recipeResults.length > limit) {
 				const nextItem = recipeResults.pop();
-				// biome-ignore lint/style/noNonNullAssertion: <explanation>
+				// biome-ignore lint/style/noNonNullAssertion: it's ok
 				nextCursor = nextItem!.id;
 			}
 
