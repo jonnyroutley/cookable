@@ -1,20 +1,20 @@
 export default function Marquee({ items }: { items: string[] }) {
 	return (
 		<div className="relative flex w-full overflow-x-hidden border-border border-t-2 border-b-2 bg-secondary-background font-base text-foreground">
-			<div className="animate-marquee whitespace-nowrap py-2">
+			<div className="animate-marquee whitespace-nowrap">
 				{items.map((item) => {
 					return (
-						<span key={item} className="mx-4 text-xs">
+						<span key={item} className="mx-2 text-xs">
 							{item}
 						</span>
 					);
 				})}
 			</div>
 
-			<div className="absolute top-0 animate-marquee2 whitespace-nowrap py-2">
+			<div className="absolute top-0 animate-marquee2 whitespace-nowrap">
 				{items.map((item) => {
 					return (
-						<span key={item} className="mx-4 text-xs">
+						<span key={item} className="mx-2 text-xs">
 							{item}
 						</span>
 					);
