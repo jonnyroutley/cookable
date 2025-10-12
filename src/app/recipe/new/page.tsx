@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
+import { cn } from "@/lib/utils";
 
 const ingredientSchema = z.object({
 	name: z.string().min(1, "Ingredient name is required"),
@@ -40,9 +41,6 @@ const ingredientSchema = z.object({
 const recipeStepSchema = z.object({
 	stepNumber: z.number().int().min(1),
 	instruction: z.string().min(1, "Instruction is required"),
-	timeMinutes: z.number().int().min(0).optional(),
-	temperature: z.string().optional(),
-	notes: z.string().optional(),
 });
 
 const createRecipeSchema = z.object({
@@ -80,9 +78,6 @@ export default function NewRecipePage() {
 			{
 				stepNumber: 1,
 				instruction: "",
-				timeMinutes: undefined,
-				temperature: "",
-				notes: "",
 			},
 		],
 		tagIds: [],
@@ -157,7 +152,7 @@ export default function NewRecipePage() {
 	};
 
 	return (
-		<div className="container mx-auto max-w-4xl p-4">
+		<div className={cn("container mx-auto max-w-4xl p-4")}>
 			<Card className="mb-6">
 				<CardHeader>
 					<CardTitle className="font-heading text-2xl">
@@ -344,9 +339,7 @@ export default function NewRecipePage() {
 							{/* Tags */}
 							{availableTags.length > 0 && (
 								<div>
-									<FormLabel className="text-base font-heading">
-										Tags
-									</FormLabel>
+									<FormLabel className="text-base font-heading">Tags</FormLabel>
 									<FormDescription className="mb-3">
 										Add relevant tags to help people find your recipe
 									</FormDescription>
@@ -354,7 +347,11 @@ export default function NewRecipePage() {
 										{availableTags.map((tag) => (
 											<Badge
 												key={tag.id}
-												variant={selectedTagIds.includes(tag.id) ? "default" : "neutral"}
+												variant={
+													selectedTagIds.includes(tag.id)
+														? "default"
+														: "neutral"
+												}
 												className="cursor-pointer select-none transition-colors hover:opacity-80"
 												onClick={() => toggleTag(tag.id)}
 											>
@@ -519,57 +516,6 @@ export default function NewRecipePage() {
 											</FormItem>
 										)}
 									/>
-
-									<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-										<FormField
-											control={form.control}
-											name={`steps.${index}.timeMinutes`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Time (minutes)</FormLabel>
-													<FormControl>
-														<Input
-															type="number"
-															placeholder="5"
-															{...field}
-															onChange={(e) =>
-																field.onChange(
-																	e.target.value
-																		? Number.parseInt(e.target.value)
-																		: undefined,
-																)
-															}
-															value={field.value || ""}
-														/>
-													</FormControl>
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={form.control}
-											name={`steps.${index}.temperature`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Temperature</FormLabel>
-													<FormControl>
-														<Input placeholder="350�F" {...field} />
-													</FormControl>
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={form.control}
-											name={`steps.${index}.notes`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Notes</FormLabel>
-													<FormControl>
-														<Input placeholder="Optional tips..." {...field} />
-													</FormControl>
-												</FormItem>
-											)}
-										/>
-									</div>
 								</div>
 							))}
 							<Button
@@ -579,9 +525,6 @@ export default function NewRecipePage() {
 									appendStep({
 										stepNumber: stepFields.length + 1,
 										instruction: "",
-										timeMinutes: undefined,
-										temperature: "",
-										notes: "",
 									})
 								}
 								className="w-full"
