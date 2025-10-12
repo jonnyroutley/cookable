@@ -9,6 +9,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/react";
 import { UserMenu } from "./_components/UserMenu";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
 	title: "Create T3 App",
@@ -45,6 +47,8 @@ export default function RootLayout({
 								Made with 💙 in Stratford
 							</div>
 						</div>
+						<SpeedInsights />
+						<Analytics />
 						<Toaster />
 					</SessionProvider>
 				</TRPCReactProvider>
