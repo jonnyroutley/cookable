@@ -73,7 +73,7 @@ export default function RecipePage() {
 				<Card>
 					<CardContent className="p-8 text-center">
 						<h2 className="mb-2 font-heading text-xl">Recipe not found</h2>
-						<p className="text-foreground/70">
+						<p className="">
 							The recipe you're looking for doesn't exist.
 						</p>
 					</CardContent>
@@ -158,7 +158,7 @@ export default function RecipePage() {
 								</span>
 							</div>
 						)}
-						<p className="text-foreground/70 text-sm">
+						<p className=" text-sm">
 							Created by{" "}
 							<span className="font-heading">{recipe.createdBy.name}</span>
 						</p>
@@ -214,7 +214,7 @@ export default function RecipePage() {
 										htmlFor={`ingredient-${ingredient.id}`}
 										className={`cursor-pointer font-base ${
 											checkedIngredients.includes(ingredient.id)
-												? "text-foreground/50 line-through"
+												? " line-through"
 												: ""
 										}`}
 									>
@@ -228,8 +228,8 @@ export default function RecipePage() {
 										<p
 											className={`mt-1 text-sm ${
 												checkedIngredients.includes(ingredient.id)
-													? "text-foreground/30 line-through"
-													: "text-foreground/70"
+													? " line-through"
+													: ""
 											}`}
 										>
 											{ingredient.notes}
@@ -241,7 +241,7 @@ export default function RecipePage() {
 					</ul>
 					{recipe.ingredients.length > 0 && (
 						<div className="mt-4 text-center">
-							<p className="text-foreground/70 text-sm">
+							<p className=" text-sm">
 								{checkedIngredients.length} of {recipe.ingredients.length}{" "}
 								ingredients checked
 							</p>
@@ -270,7 +270,7 @@ export default function RecipePage() {
 									<p
 										className={`font-base leading-relaxed${
 											checkedSteps.includes(step.stepNumber)
-												? "text-foreground/50 line-through"
+												? " line-through"
 												: ""
 										}
 											`}
@@ -278,7 +278,7 @@ export default function RecipePage() {
 										{step.instruction}
 									</p>
 									{(step.timeMinutes || step.temperature || step.notes) && (
-										<div className="mt-2 space-y-1 text-foreground/70 text-sm">
+										<div className="mt-2 space-y-1  text-sm">
 											{step.timeMinutes && <p>⏱️ {step.timeMinutes} minutes</p>}
 											{step.temperature && <p>🌡️ {step.temperature}</p>}
 											{step.notes && <p>💡 {step.notes}</p>}

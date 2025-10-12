@@ -12,6 +12,7 @@ import {
 	recipeSteps,
 	recipes,
 	recipeTags,
+	tags,
 } from "@/server/db/schema";
 
 const ingredientSchema = z.object({
@@ -288,6 +289,35 @@ export const recipeRouter = createTRPCRouter({
 				})),
 				nextCursor,
 			};
+		}),
+
+	getTags: publicProcedure.query(async ({ ctx }) => {
+		const allTags = await ctx.db.query.tags.findMany({
+			orderBy: (tags, { asc }) => [asc(tags.name)],
+		});
+
+		return allTags;
+	}),
+
+	createTag: protectedProcedure
+		.input(
+			z.object({
+				name: z.string().min(1).max(100),
+				type: z.enum(["cuisine", "allergen", "diet", "meal", "other"]),
+				color: z.string().length(7).optional(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const [tag] = await ctx.db
+				.insert(tags)
+				.values({
+					name: input.name,
+					type: input.type,
+					color: input.color,
+				})
+				.returning();
+
+			return tag;
 		}),
 
 	delete: protectedProcedure

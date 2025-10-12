@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 // import { LatestPost } from "@/app/_components/post";
 import { auth } from "@/server/auth";
 import { api, HydrateClient } from "@/trpc/server";
+import { NewRecipeButton } from "./_components/NewRecipeButton";
+import { Dice5, NotebookTabs } from "lucide-react";
 
 export default async function Home() {
 	const _hello = await api.post.hello({ text: "from tRPC" });
@@ -31,37 +33,37 @@ export default async function Home() {
 				<div className="overflow-hidden">
 					<Marquee
 						items={[
-							"Let's eat", // English
+							"Let's eat!", // English
 							"🍑",
-							"我们吃吧", // Chinese (Mandarin)
+							"我们吃吧!", // Chinese (Mandarin)
 							"🍙",
-							"Mangeons", // French
+							"Mangeons!", // French
 							"🍜",
-							"食べましょう", // Japanese
+							"食べましょう!", // Japanese
 							"🍝",
-							"Mangiamo", // Italian
+							"Mangiamo!", // Italian
 							"🍕",
-							"لنأكل", // Arabic
+							"لنأكل!", // Arabic
 							"🍔",
-							"Vamos a comer", // Spanish
+							"Vamos a comer!", // Spanish
 							"🍖",
-							"Lass uns essen", // German
+							"Lass uns essen!", // German
 							"🍟",
-							"Vamos comer", // Portuguese
+							"Vamos comer!", // Portuguese
 							"🍣",
-							"Давай поедим", // Russian
+							"Давай поедим!", // Russian
 							"🥓",
-							"चलो खाते हैं", // Hindi
+							"चलो खाते हैं!", // Hindi
 							"🍳",
-							"Hadi yiyelim", // Turkish
+							"Hadi yiyelim!", // Turkish
 							"🍆",
-							"먹자", // Korean
+							"먹자!", // Korean
 							"🍰",
-							"Ayo makan", // Indonesian
+							"Ayo makan!", // Indonesian
 							"🍛",
-							"Laten we eten", // Dutch
+							"Laten we eten!", // Dutch
 							"🍱",
-							"Äta nu", // Swedish
+							"Äta nu!", // Swedish
 							"🐟",
 						]}
 					/>
@@ -77,18 +79,19 @@ export default async function Home() {
 							<div className="flex flex-wrap justify-center gap-4">
 								<Link href="/recipe">
 									<Button type="button" variant="neutral">
+										<NotebookTabs className="size-4" />
 										see all recipes
 									</Button>
 								</Link>
-								<Button variant="neutral">I'm feeling lucky</Button>
-								<Link href="/recipe/new">
-									<Button type="button">+ new recipe</Button>
-								</Link>
+								<Button variant="neutral">
+									<Dice5 className="size-4" />
+									I'm feeling lucky</Button>
+								<NewRecipeButton />
 							</div>
 						</CardContent>
 					</Card>
 					<div className="w-full max-w-[200px]">
-						<Carousel>
+						{/* <Carousel>
 							<CarouselContent>
 								{Array.from({ length: 5 }).map((_, index) => (
 									// biome-ignore lint/suspicious/noArrayIndexKey: don't care
@@ -107,7 +110,7 @@ export default async function Home() {
 							</CarouselContent>
 							<CarouselPrevious />
 							<CarouselNext />
-						</Carousel>
+						</Carousel> */}
 					</div>
 				</main>
 				<div className="absolute right-0 bottom-0 left-0 border-t-2 bg-white py-2 text-center text-xs">

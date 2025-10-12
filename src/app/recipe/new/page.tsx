@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChefHat, Clock, Plus, Trash2, Users } from "lucide-react";
+import { ChefHat, Clock, Plus, Trash2, Users, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -65,6 +65,7 @@ type CreateRecipeForm = z.infer<typeof createRecipeSchema>;
 export default function NewRecipePage() {
 	const router = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
 	const defaultValues: CreateRecipeForm = {
 		title: "",
@@ -109,6 +110,18 @@ export default function NewRecipePage() {
 		control: form.control,
 		name: "steps",
 	});
+
+	// Fetch available tags
+	const { data: availableTags = [] } = api.recipe.getTags.useQuery();
+
+	const toggleTag = (tagId: number) => {
+		const newTagIds = selectedTagIds.includes(tagId)
+			? selectedTagIds.filter((id) => id !== tagId)
+			: [...selectedTagIds, tagId];
+
+		setSelectedTagIds(newTagIds);
+		form.setValue("tagIds", newTagIds);
+	};
 
 	const createRecipe = api.recipe.create.useMutation({
 		onSuccess: (recipe) => {
@@ -327,6 +340,30 @@ export default function NewRecipePage() {
 									)}
 								/>
 							</div>
+
+							{/* Tags */}
+							{availableTags.length > 0 && (
+								<div>
+									<FormLabel className="text-base font-heading">
+										Tags
+									</FormLabel>
+									<FormDescription className="mb-3">
+										Add relevant tags to help people find your recipe
+									</FormDescription>
+									<div className="flex flex-wrap gap-2">
+										{availableTags.map((tag) => (
+											<Badge
+												key={tag.id}
+												variant={selectedTagIds.includes(tag.id) ? "default" : "neutral"}
+												className="cursor-pointer select-none transition-colors hover:opacity-80"
+												onClick={() => toggleTag(tag.id)}
+											>
+												{tag.name}
+											</Badge>
+										))}
+									</div>
+								</div>
+							)}
 						</CardContent>
 					</Card>
 

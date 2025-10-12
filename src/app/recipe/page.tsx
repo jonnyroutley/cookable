@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/trpc/react";
+import { NewRecipeButton } from "../_components/NewRecipeButton";
 
 function RecipeCardSkeleton() {
 	return (
@@ -203,12 +204,7 @@ export default function RecipesPage() {
 						Discover delicious recipes from our community
 					</p>
 				</div>
-				<Link href="/recipe/new">
-					<Button>
-						<Plus className="mr-2 h-4 w-4" />
-						Add Recipe
-					</Button>
-				</Link>
+				<NewRecipeButton />
 			</div>
 
 			{/* Search */}
