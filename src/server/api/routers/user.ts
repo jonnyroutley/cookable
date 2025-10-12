@@ -2,17 +2,17 @@ import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-import {
-	createTRPCRouter,
-	protectedProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { users } from "@/server/db/schema";
 
 export const userRouter = createTRPCRouter({
 	updateProfile: protectedProcedure
 		.input(
 			z.object({
-				name: z.string().min(1, "Name is required").max(255, "Name must be less than 255 characters"),
+				name: z
+					.string()
+					.min(1, "Name is required")
+					.max(255, "Name must be less than 255 characters"),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {

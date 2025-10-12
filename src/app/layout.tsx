@@ -2,13 +2,13 @@ import "@/styles/globals.css";
 
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
-
-import { TRPCReactProvider } from "@/trpc/react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { UserMenu } from "./_components/UserMenu";
 import { SessionProvider } from "next-auth/react";
+import Star8 from "@/components/stars/s8";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+import { TRPCReactProvider } from "@/trpc/react";
+import { UserMenu } from "./_components/UserMenu";
 
 export const metadata: Metadata = {
 	title: "Create T3 App",
@@ -30,6 +30,7 @@ export default function RootLayout({
 					<SessionProvider>
 						<div className={cn("relative min-h-screen")}>
 							<div className="flex w-full items-center justify-between border-black border-y-4 p-4">
+								<Star8 className="absolute top-3 left-56 size-8 text-main hover:animate-spin" />
 								<Link
 									href="/"
 									className="w-fit font-bold text-3xl hover:text-main hover:underline sm:text-5xl"

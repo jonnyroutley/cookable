@@ -10,7 +10,8 @@ import {
 	UserPlus,
 	Users,
 } from "lucide-react";
-
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -26,8 +27,6 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { SignOutMenuButton } from "./Foo";
 
 function LoggedInMenu({ name }: { name: string }) {

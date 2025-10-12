@@ -110,7 +110,7 @@ function RecipeCard({
 				</CardHeader>
 				<CardContent>
 					{/* Recipe Meta Info */}
-					<div className="mb-3 flex flex-wrap gap-3  text-sm">
+					<div className="mb-3 flex flex-wrap gap-3 text-sm">
 						{recipe.servings && (
 							<div className="flex items-center gap-1">
 								<Users className="h-3 w-3" />
@@ -152,9 +152,7 @@ function RecipeCard({
 					)}
 
 					{/* Author */}
-					<div className=" text-xs">
-						by {recipe.createdBy.name}
-					</div>
+					<div className=" text-xs">by {recipe.createdBy.name}</div>
 				</CardContent>
 			</Card>
 		</Link>
@@ -200,9 +198,7 @@ export default function RecipesPage() {
 					<h1 className="mb-2 font-heading text-2xl sm:text-3xl">
 						All Recipes
 					</h1>
-					<p className="">
-						Discover delicious recipes from our community
-					</p>
+					<p className="">Discover delicious recipes from our community</p>
 				</div>
 				<NewRecipeButton />
 			</div>
@@ -233,9 +229,7 @@ export default function RecipesPage() {
 				<Card>
 					<CardContent className="p-8 text-center">
 						<h2 className="mb-2 font-heading text-xl">Something went wrong</h2>
-						<p className="">
-							Unable to load recipes. Please try again later.
-						</p>
+						<p className="">Unable to load recipes. Please try again later.</p>
 					</CardContent>
 				</Card>
 			)}
@@ -289,7 +283,7 @@ export default function RecipesPage() {
 
 					{/* Search Results Info */}
 					{searchQuery && (
-						<div className="text-center  text-sm">
+						<div className="text-center text-sm">
 							Found {filteredRecipes.length} recipe
 							{filteredRecipes.length === 1 ? "" : "s"} for "{searchQuery}"
 						</div>

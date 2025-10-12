@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -213,7 +213,11 @@ export default function ProfilePage() {
 							<div className="space-y-4">
 								<div>
 									<FormLabel className="font-base">Email</FormLabel>
-									<Input value={profile.email} disabled className="bg-muted bg-white" />
+									<Input
+										value={profile.email}
+										disabled
+										className="bg-muted bg-white"
+									/>
 								</div>
 							</div>
 

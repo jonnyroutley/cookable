@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefHat, Clock, Plus, Trash2, Users, X } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,8 +28,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { api } from "@/trpc/react";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/react";
 
 const ingredientSchema = z.object({
 	name: z.string().min(1, "Ingredient name is required"),
@@ -166,8 +166,8 @@ export default function NewRecipePage() {
 				<Card className="mb-6">
 					<CardHeader>
 						<div className="animate-pulse">
-							<div className="h-8 bg-secondary-background rounded mb-2"></div>
-							<div className="h-4 bg-secondary-background rounded w-3/4"></div>
+							<div className="mb-2 h-8 rounded bg-secondary-background"></div>
+							<div className="h-4 w-3/4 rounded bg-secondary-background"></div>
 						</div>
 					</CardHeader>
 				</Card>
@@ -368,7 +368,7 @@ export default function NewRecipePage() {
 							{/* Tags */}
 							{availableTags.length > 0 && (
 								<div>
-									<FormLabel className="text-base font-heading">Tags</FormLabel>
+									<FormLabel className="font-heading text-base">Tags</FormLabel>
 									<FormDescription className="mb-3">
 										Add relevant tags to help people find your recipe
 									</FormDescription>

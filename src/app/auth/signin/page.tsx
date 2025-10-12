@@ -1,13 +1,13 @@
 "use client";
 
-import { signIn, getProviders } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState, useMemo } from "react";
-import { Github, LogIn, Mail } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Github, LogIn, Mail } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { getProviders, signIn } from "next-auth/react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {

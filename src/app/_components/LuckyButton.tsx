@@ -8,7 +8,14 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 
 interface LuckyButtonProps {
-	variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "neutral";
+	variant?:
+		| "default"
+		| "destructive"
+		| "outline"
+		| "secondary"
+		| "ghost"
+		| "link"
+		| "neutral";
 	size?: "default" | "sm" | "lg" | "icon";
 	className?: string;
 	children?: React.ReactNode;
@@ -18,7 +25,7 @@ export function LuckyButton({
 	variant = "neutral",
 	size = "default",
 	className,
-	children
+	children,
 }: LuckyButtonProps) {
 	const router = useRouter();
 
@@ -47,7 +54,10 @@ export function LuckyButton({
 			disabled={getRandomRecipe.isFetching}
 		>
 			<Dice5 className="size-4" />
-			{children || (getRandomRecipe.isFetching ? "Finding recipe..." : "I'm feeling lucky")}
+			{children ||
+				(getRandomRecipe.isFetching
+					? "Finding recipe..."
+					: "I'm feeling lucky")}
 		</Button>
 	);
 }
