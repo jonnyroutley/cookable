@@ -43,7 +43,7 @@ function LoggedInMenu({ name }: { name: string }) {
 					</DropdownMenuItem>
 				</Link>
 			</DropdownMenuGroup>
-			<DropdownMenuSeparator />
+			{/* <DropdownMenuSeparator />
 			<DropdownMenuGroup>
 				<DropdownMenuItem>
 					<Users />
@@ -63,7 +63,7 @@ function LoggedInMenu({ name }: { name: string }) {
 						</DropdownMenuSubContent>
 					</DropdownMenuPortal>
 				</DropdownMenuSub>
-			</DropdownMenuGroup>
+			</DropdownMenuGroup> */}
 			<DropdownMenuSeparator />
 			<Link
 				href="https://github.com/jonnyroutley/cookable"
