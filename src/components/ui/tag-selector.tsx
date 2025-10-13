@@ -191,7 +191,6 @@ export function TagSelector({
 								}
 							>
 								{tag.name}
-								<span className="ml-1 text-xs opacity-75">({tag.type})</span>
 							</Badge>
 						))}
 					</div>
