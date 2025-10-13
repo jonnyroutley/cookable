@@ -1,7 +1,6 @@
 "use client";
 
 import { ChefHat, Clock, Tag, Users, X } from "lucide-react";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +15,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/trpc/react";
+import { Slider } from "@/components/ui/slider";
 
 function Divider() {
 	return <div className="mt-4 border-border border-t-2 pt-4" />;
@@ -94,12 +94,15 @@ export default function RecipePage() {
 	const params = useParams();
 	const recipeId = Number.parseInt(params.id as string);
 	const [checkedIngredients, setCheckedIngredients] = useState<number[]>([]);
+	const [mouthsToFeed, setMouthsToFeed] = useState<[number]>([4]);
 
 	const {
 		data: recipe,
 		isLoading,
 		error,
 	} = api.recipe.getById.useQuery({ id: recipeId });
+
+	const multiplier = mouthsToFeed[0] / (recipe?.servings ?? 4);
 
 	const toggleIngredient = (ingredientId: number) => {
 		setCheckedIngredients((prev) =>
@@ -166,14 +169,12 @@ export default function RecipePage() {
 				<CardContent className="">
 					{/* Recipe Meta Info */}
 					<div className="mb-4 flex flex-wrap gap-4">
-						{recipe.servings && (
-							<div className="flex items-center gap-2">
-								<Users className="h-4 w-4 " />
-								<span className="font-base text-sm">
-									{recipe.servings} servings
-								</span>
-							</div>
-						)}
+						<div className="flex items-center gap-2">
+							<Users className="h-4 w-4 " />
+							<span className="font-base text-sm">
+								{(recipe.servings ?? 4) * multiplier} servings
+							</span>
+						</div>
 						{recipe.prepTimeMinutes && (
 							<div className="flex items-center gap-2">
 								<Clock className="h-4 w-4 " />
@@ -211,7 +212,6 @@ export default function RecipePage() {
 							<span className="font-heading">{recipe.createdBy.name}</span>
 						</p>
 					</div>
-
 					{/* Tags */}
 					{recipe.tags && recipe.tags.length > 0 && (
 						<div className="flex flex-wrap items-center gap-2">
@@ -221,7 +221,7 @@ export default function RecipePage() {
 								return (
 									<Badge
 										key={tag.id}
-										variant={tag.type === "allergen" ? "neutral" : "default"}
+										variant="neutral"
 										className={tag.color ? `bg-${tag.color}` : ""}
 									>
 										{tag.name}
@@ -230,9 +230,19 @@ export default function RecipePage() {
 							})}
 						</div>
 					)}
-
 					<Divider />
-
+					How many people are you cooking for?
+					<div className="flex w-full items-center gap-2">
+						<Slider
+							value={mouthsToFeed}
+							min={1}
+							max={35}
+							step={1}
+							onValueChange={(value) => setMouthsToFeed(value as [number])}
+						/>
+						{mouthsToFeed[0]}
+					</div>
+					<Divider />
 					<div className="mb-4 flex items-center justify-between">
 						<h2 className="h-8 font-heading text-xl">Ingredients</h2>
 						{checkedIngredients.length > 0 && (
@@ -247,7 +257,6 @@ export default function RecipePage() {
 							</Button>
 						)}
 					</div>
-
 					<ul className="space-y-3 ">
 						{recipe.ingredients.map((ingredient) => (
 							<li key={ingredient.id} className="ml-3 flex items-start gap-3 ">
@@ -267,7 +276,7 @@ export default function RecipePage() {
 										}`}
 									>
 										{ingredient.amount && ingredient.unit
-											? `${ingredient.amount} ${ingredient.unit}`
+											? `${Number(ingredient.amount) * multiplier} ${ingredient.unit}`
 											: ingredient.amount || ""}
 										{ingredient.amount || ingredient.unit ? " " : ""}
 										{ingredient.name}
@@ -295,11 +304,8 @@ export default function RecipePage() {
 							</p>
 						</div>
 					)}
-
 					<Divider />
-
 					<h2 className="mb-4 font-heading text-xl">Instructions</h2>
-
 					<ol className="space-y-4">
 						{recipe.steps.map((step) => (
 							<li key={step.id} className="flex items-start gap-3">

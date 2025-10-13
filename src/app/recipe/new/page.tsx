@@ -9,7 +9,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -21,7 +20,6 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -407,7 +405,7 @@ export default function NewRecipePage() {
 											<FormItem className="sm:col-span-2">
 												<FormLabel className="sr-only">Amount</FormLabel>
 												<FormControl>
-													<Input placeholder="1" {...field} />
+													<Input placeholder="1" {...field} type="number" />
 												</FormControl>
 											</FormItem>
 										)}
