@@ -33,7 +33,7 @@ declare module "next-auth" {
 export const authConfig = () => {
 	const pool = new Pool({ connectionString: env.DATABASE_URL });
 	return {
-		providers: [Resend({ from: "NoReply <noreply@cookable.health>" })],
+		providers: [Resend({ from: "Cookable <noreply@cookable.health>" })],
 		adapter: PostgresAdapter(pool),
 		callbacks: {
 			session: ({ session, user }) => ({

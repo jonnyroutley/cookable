@@ -32,7 +32,7 @@ export default function RootLayout({
 					<SessionProvider>
 						<div className={cn("relative min-h-screen")}>
 							<div className="flex w-full items-center justify-between border-black border-y-4 p-4">
-								<Star8 className="absolute top-3 left-56 size-8 text-main hover:animate-spin" />
+								<Star8 className="absolute top-3 left-36 size-8 text-main hover:animate-spin sm:left-56" />
 								<Link
 									href="/"
 									className="w-fit font-bold text-3xl hover:text-main hover:underline sm:text-5xl"

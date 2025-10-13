@@ -68,12 +68,12 @@ export default function ProfilePage() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const searchParams = useSearchParams();
 	const isSetup = searchParams.get("setup") === "true";
+	const utils = api.useUtils();
 
 	const {
 		data: profile,
 		isLoading,
 		error,
-		refetch: refetchProfile,
 	} = api.user.getProfile.useQuery(undefined, {
 		enabled: !!session?.user,
 	});
@@ -112,8 +112,8 @@ export default function ProfilePage() {
 				},
 			});
 
-			// Refetch profile data
-			await refetchProfile();
+			// Invalidate and refetch profile data
+			await utils.user.getProfile.invalidate();
 
 			// If this was setup, redirect to home page
 			if (isSetup) {
