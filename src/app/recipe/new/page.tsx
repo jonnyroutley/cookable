@@ -28,7 +28,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TagSelector } from "@/components/ui/tag-selector";
+import { TagSelector, type Tag } from "@/components/ui/tag-selector";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 
@@ -67,7 +67,7 @@ export default function NewRecipePage() {
 	const { data: session, status } = useSession();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-	const [availableTags, setAvailableTags] = useState<any[]>([]);
+	const utils = api.useUtils();
 
 	// Redirect to login if not authenticated
 	useEffect(() => {
@@ -118,12 +118,7 @@ export default function NewRecipePage() {
 	});
 
 	// Fetch available tags
-	const { data: tagsData = [] } = api.recipe.getTags.useQuery();
-
-	// Update available tags when data changes
-	useEffect(() => {
-		setAvailableTags(tagsData);
-	}, [tagsData]);
+	const { data: availableTags = [] } = api.recipe.getTags.useQuery();
 
 	const toggleTag = (tagId: number) => {
 		const newTagIds = selectedTagIds.includes(tagId)
@@ -134,13 +129,11 @@ export default function NewRecipePage() {
 		form.setValue("tagIds", newTagIds);
 	};
 
-	const handleTagCreate = (newTag: any) => {
-		// Add the newly created tag to available tags
-		setAvailableTags((prev) => [...prev, newTag]);
-		// Automatically select the newly created tag
+	const handleTagCreate = (newTag: Tag) => {
 		const newTagIds = [...selectedTagIds, newTag.id];
 		setSelectedTagIds(newTagIds);
 		form.setValue("tagIds", newTagIds);
+		utils.recipe.getTags.invalidate();
 	};
 
 	const createRecipe = api.recipe.create.useMutation({

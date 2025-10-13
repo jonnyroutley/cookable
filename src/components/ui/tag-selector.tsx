@@ -7,13 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
+import type { tags } from "@/server/db/schema";
 
-interface Tag {
-	id: number;
-	name: string;
-	type: string;
-	color?: string | null;
-}
+export type Tag = typeof tags.$inferSelect;
 
 interface TagSelectorProps {
 	selectedTagIds: number[];
@@ -28,17 +24,6 @@ const TAG_TYPES = [
 	{ value: "dietary", label: "dietary" },
 ] as const;
 
-const TAG_COLORS = [
-	"#ef4444", // red
-	"#f97316", // orange
-	"#eab308", // yellow
-	"#22c55e", // green
-	"#3b82f6", // blue
-	"#8b5cf6", // violet
-	"#ec4899", // pink
-	"#64748b", // slate
-] as const;
-
 export function TagSelector({
 	selectedTagIds,
 	onTagToggle,
@@ -50,7 +35,6 @@ export function TagSelector({
 	const [newTagType, setNewTagType] = useState<
 		"cuisine" | "allergen" | "dietary"
 	>("dietary");
-	const [newTagColor, setNewTagColor] = useState<string>(TAG_COLORS[0]);
 
 	const createTagMutation = api.recipe.createTag.useMutation({
 		onSuccess: (newTag) => {
@@ -59,7 +43,6 @@ export function TagSelector({
 				onTagCreate?.(newTag);
 				setIsCreating(false);
 				setNewTagName("");
-				setNewTagColor(TAG_COLORS[0]);
 			}
 		},
 		onError: (error) => {
@@ -76,7 +59,6 @@ export function TagSelector({
 		createTagMutation.mutate({
 			name: newTagName.trim(),
 			type: newTagType,
-			color: newTagColor,
 		});
 	};
 
@@ -84,7 +66,6 @@ export function TagSelector({
 		setIsCreating(false);
 		setNewTagName("");
 		setNewTagType("dietary");
-		setNewTagColor(TAG_COLORS[0]);
 	};
 
 	return (
@@ -156,25 +137,6 @@ export function TagSelector({
 									</option>
 								))}
 							</select>
-						</div>
-					</div>
-					<div>
-						{/** biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
-						<label className="mb-1 block font-medium text-sm">Color</label>
-						<div className="flex gap-2">
-							{TAG_COLORS.map((color) => (
-								<button
-									key={color}
-									type="button"
-									className={`h-6 w-6 rounded-full border-2 ${
-										newTagColor === color
-											? "border-foreground"
-											: "border-transparent"
-									}`}
-									style={{ backgroundColor: color }}
-									onClick={() => setNewTagColor(color)}
-								/>
-							))}
 						</div>
 					</div>
 					<div className="flex justify-end gap-2">
