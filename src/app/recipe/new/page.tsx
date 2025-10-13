@@ -32,8 +32,8 @@ import { api } from "@/trpc/react";
 
 const ingredientSchema = z.object({
 	name: z.string().min(1, "Ingredient name is required"),
-	amount: z.string().optional(),
-	unit: z.string().optional(),
+	amount: z.string(),
+	unit: z.string(),
 	notes: z.string().optional(),
 	order: z.number().int().min(0),
 });
@@ -46,10 +46,10 @@ const recipeStepSchema = z.object({
 const createRecipeSchema = z.object({
 	title: z.string().min(1, "Title is required").max(255),
 	description: z.string().optional(),
-	servings: z.number().int().min(1).optional(),
-	prepTimeMinutes: z.number().int().min(0).optional(),
-	cookTimeMinutes: z.number().int().min(0).optional(),
-	difficulty: z.enum(["easy", "medium", "hard"]).optional(),
+	servings: z.number().int().min(1),
+	prepTimeMinutes: z.number().int().min(0),
+	cookTimeMinutes: z.number().int().min(0),
+	difficulty: z.enum(["easy", "medium", "hard"]),
 	// imageUrl: z.string().url().optional().or(z.literal("")),
 	ingredients: z
 		.array(ingredientSchema)
@@ -77,10 +77,10 @@ export default function NewRecipePage() {
 	const defaultValues: CreateRecipeForm = {
 		title: "",
 		description: "",
-		servings: undefined,
-		prepTimeMinutes: undefined,
-		cookTimeMinutes: undefined,
-		difficulty: undefined,
+		servings: 4,
+		prepTimeMinutes: 0,
+		cookTimeMinutes: 0,
+		difficulty: "medium",
 		// imageUrl: "",
 		ingredients: [{ name: "", amount: "", unit: "", notes: "", order: 0 }],
 		steps: [
