@@ -277,7 +277,7 @@ export default function RecipePage() {
 									>
 										{ingredient.amount && ingredient.unit
 											? `${Number(ingredient.amount) * multiplier} ${ingredient.unit}`
-											: ingredient.amount || ""}
+											: `${Number(ingredient.amount) * multiplier}` || ""}
 										{ingredient.amount || ingredient.unit ? " " : ""}
 										{ingredient.name}
 									</label>
