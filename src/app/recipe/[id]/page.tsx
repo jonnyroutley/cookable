@@ -275,11 +275,7 @@ export default function RecipePage() {
 												: ""
 										}`}
 									>
-										{ingredient.amount && ingredient.unit
-											? `${Number(ingredient.amount) * multiplier} ${ingredient.unit}`
-											: `${Number(ingredient.amount) * multiplier}` || ""}
-										{ingredient.amount || ingredient.unit ? " " : ""}
-										{ingredient.name}
+										{`${ingredient.amount ? Math.round(Number(ingredient.amount) * multiplier * 100) / 100 : ""} ${ingredient.unit ?? ""} ${ingredient.name}`}
 									</label>
 									{ingredient.notes && (
 										<p
